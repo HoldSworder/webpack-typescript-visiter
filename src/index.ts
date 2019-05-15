@@ -19,7 +19,7 @@ interface deptInPersonDto {
   inCount: number
 }
 
-class Echarts {
+abstract class Echarts {
   theme: string
   option: any
   id: string
@@ -48,35 +48,10 @@ class PersonInEchart extends Echarts {
   indexArr: string[]
   trMax: number
   speed: number
+  interval: any
+  response: deptInPersonDto[]
   constructor(id: string) {
-    let data = [
-      ['amount', 'product'],
-      [58212, '枣庄市科瑞电力设备有限公司'],
-      [78254, '苏州维赛克阀门检测技术有限公司'],
-      [41032, '发电部'],
-      [12755, '技术支持部'],
-      [20145, '中地电气巡检'],
-      [79146, '北京高能时代环境技术股份有限公司'],
-      [91852, '烟台源帝物流']
-      // [101852, 'hh'],
-      // [101852, 'hhh'],
-      // [101852, 'hh1'],
-      // [101852, 'hh2'],
-      // [101854, 'hh3'],
-      // [101854, 'hh32'],
-      // [101854, 'hh33'],
-      // [101854, 'hh34'],
-      // [101854, 'hh35'],
-      // [101854, 'hh36'],
-      // [101854, 'hh37'],
-      // [101854, 'hh38'],
-      // [101854, 'hh39'],
-      // [101854, 'hh322'],
-      // [101854, 'hh3212'],
-      // [101854, 'hh312'],
-      // [101854, 'hh35'],
-      // [20112, 'ii']
-    ]
+    let data = []
 
     let option: any = {
       dataset: {
@@ -126,7 +101,9 @@ class PersonInEchart extends Echarts {
 
     this.indexArr = ['inCount', 'deptName']
     this.trMax = 20
-    this.speed = 2000
+    this.speed = 15000
+    this.interval
+    this.response = []
   }
 
   updateData(src: deptInPersonDto[]) {
@@ -135,21 +112,28 @@ class PersonInEchart extends Echarts {
     for (const item of src) {
       dataSrc.push([item.inCount, item.deptName])
     }
-    console.log(dataSrc)
     this.option.dataset.source = dataSrc
     this.initFuc()
   }
 
   play(src: deptInPersonDto[]) {
     const THAT = this
+    if (src.length == THAT.response.length) {
+      THAT.response = src
+      return
+    }
+    if (THAT.interval) clearInterval(THAT.interval)
+    THAT.response = src
     let index: number = 0
     function playFun() {
-      THAT.updateData(src.slice(index * THAT.trMax, (index + 1) * THAT.trMax))
+      THAT.updateData(
+        THAT.response.slice(index * THAT.trMax, (index + 1) * THAT.trMax)
+      )
       index++
     }
     playFun()
-    setInterval(() => {
-      if (index >= src.length / this.trMax) index = 0
+    THAT.interval = setInterval(() => {
+      if (index >= THAT.response.length / THAT.trMax) index = 0
       playFun()
     }, THAT.speed)
   }
@@ -160,10 +144,16 @@ class Table {
   head: string
   trMax: number
   speed: number
+  interval: any
+  response: causeDto[]
+  total: number
   constructor(id: string) {
     this.id = id
     this.trMax = 20
-    this.speed = 2000
+    this.speed = 15000
+    this.interval
+    this.response = []
+    this.total
     this.head = `
     <tr>
       <th>车辆名称</th>
@@ -199,33 +189,74 @@ class Table {
 
   play(data: causeDto[], total: number = 0) {
     const THAT = this
+    if (data.length == THAT.response.length) {
+      THAT.response = data
+      THAT.total = total
+      return
+    }
+    if (THAT.interval) clearInterval(THAT.interval)
+    THAT.response = data
+    THAT.total = total
     let index: number = 0
+    playFun()
+    THAT.interval = setInterval(() => {
+      if (index >= THAT.response.length / THAT.trMax) index = 0
+      playFun()
+    }, THAT.speed)
+
     function playFun() {
       THAT.uploadData(
-        data.slice(index * THAT.trMax, (index + 1) * THAT.trMax),
-        total
+        THAT.response.slice(index * THAT.trMax, (index + 1) * THAT.trMax),
+        THAT.total
       )
       index++
     }
-    playFun()
-    setInterval(() => {
-      if (index >= data.length / this.trMax) index = 0
-      playFun()
-    }, THAT.speed)
   }
 }
 
 const personInAuth = new PersonInEchart('#person_auth')
 const causeTable = new Table('#cause_table')
 
-const baseUrl: string =
-  'https://www.easy-mock.com/mock/5cdb7945f2f8913ca63714d2/test'
-axios
-  .post(baseUrl + '/basic/projectionreport', {
-    areaId
-  })
-  .then(res => {
-    let data = res.data
-    personInAuth.play(data.deptInPersonDto)
-    causeTable.play(data.causeDto, data.total)
-  })
+// const baseUrl = 'https://www.easy-mock.com/mock/5cdb7945f2f8913ca63714d2/test'
+function updateData() {
+  axios
+    .post('/basic/projectionreport', {
+      areaId
+    })
+    .then(res => {
+      let data = res.data
+      personInAuth.play(data.deptInPersonDto)
+      causeTable.play(data.causeDto, data.total)
+    })
+}
+
+updateData()
+setInterval(function() {
+  updateData()
+}, 15000)
+
+// setTimeout(function() {
+//   axios
+//     .post(baseUrl + '/basic/projectionreport1', {
+//       areaId
+//     })
+//     .then(res => {
+//       console.log('change')
+//       let data = res.data
+//       personInAuth.play(data.deptInPersonDto)
+//       causeTable.play(data.causeDto, data.total)
+//     })
+// }, 10000)
+
+// setTimeout(function() {
+//   axios
+//     .post(baseUrl + '/basic/projectionreport2', {
+//       areaId
+//     })
+//     .then(res => {
+//       console.log('change2')
+//       let data = res.data
+//       personInAuth.play(data.deptInPersonDto)
+//       causeTable.play(data.causeDto, data.total)
+//     })
+// }, 20000)
