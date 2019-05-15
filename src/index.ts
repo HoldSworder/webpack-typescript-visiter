@@ -65,7 +65,7 @@ class PersonInEchart extends Echarts {
         containLabel: true
       },
       xAxis: {
-        name: 'amount'
+        name: 'inCount'
       },
       yAxis: {
         type: 'category'
@@ -90,8 +90,8 @@ class PersonInEchart extends Echarts {
             }
           },
           encode: {
-            x: 'amount',
-            y: 'product'
+            x: 'inCount',
+            y: 'deptName'
           }
         }
       ]
