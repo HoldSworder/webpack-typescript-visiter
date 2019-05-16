@@ -65,15 +65,18 @@ class PersonInEchart extends Echarts {
         containLabel: true
       },
       xAxis: {
-        name: 'inCount'
+        name: '',
+        minInterval: 1
       },
       yAxis: {
-        type: 'category'
+        type: 'category',
+        axisLabel: {
+          fontSize: 16
+        }
       },
       textStyle: {
         fontFamily: 'Arial',
-        color: themeColor,
-        fontSize: '32px'
+        color: themeColor
       },
       visualMap: {
         show: false,
@@ -146,23 +149,21 @@ class Table {
   speed: number
   interval: any
   response: causeDto[]
-  total: number
   constructor(id: string) {
     this.id = id
-    this.trMax = 20
+    this.trMax = 15
     this.speed = 15000
     this.interval
     this.response = []
-    this.total
     this.head = `
     <tr>
       <th>车辆名称</th>
-      <th>车数（辆）</th>
+      <th>车数</th>
     </tr>
     `
   }
 
-  uploadData(data: causeDto[], total: number = 0) {
+  uploadData(data: causeDto[]) {
     const tableDom = document.querySelector(this.id).children[0].children[0]
     const THAT = this
 
@@ -180,23 +181,17 @@ class Table {
     tableDom.innerHTML = `
       ${this.head}
       ${html}
-      <tr>
-        <td>总数</td>
-        <td>${total}</td>
-      </tr>
     `
   }
 
-  play(data: causeDto[], total: number = 0) {
+  play(data: causeDto[]) {
     const THAT = this
     if (data.length == THAT.response.length) {
       THAT.response = data
-      THAT.total = total
       return
     }
     if (THAT.interval) clearInterval(THAT.interval)
     THAT.response = data
-    THAT.total = total
     let index: number = 0
     playFun()
     THAT.interval = setInterval(() => {
@@ -206,27 +201,66 @@ class Table {
 
     function playFun() {
       THAT.uploadData(
-        THAT.response.slice(index * THAT.trMax, (index + 1) * THAT.trMax),
-        THAT.total
+        THAT.response.slice(index * THAT.trMax, (index + 1) * THAT.trMax)
       )
       index++
     }
   }
 }
 
+class totalTable {
+  personTotal: number
+  carTotal: number
+  dom: any
+  constructor(id: string) {
+    this.personTotal
+    this.carTotal
+    this.dom = document.querySelector(id).children[0].children[0]
+  }
+
+  update(personTotal: number, carTotal: number) {
+    this.personTotal = personTotal
+    this.carTotal = carTotal
+    this.dom.innerHTML = `
+    <tr>
+      <th>车辆总数</th>
+      <th>${this.carTotal}</th>
+    </tr>
+    <tr>
+        <th>人员总数</th>
+        <th>${this.personTotal}</th>
+    </tr>
+    `
+  }
+}
+
 const personInAuth = new PersonInEchart('#person_auth')
 const causeTable = new Table('#cause_table')
+const total = new totalTable('#total_table')
 
-// const baseUrl = 'https://www.easy-mock.com/mock/5cdb7945f2f8913ca63714d2/test'
+let baseUrl: string
+if (process.env.NODE_ENV == 'production') {
+  baseUrl = ''
+} else {
+  baseUrl = 'https://www.easy-mock.com/mock/5cdb7945f2f8913ca63714d2/test'
+}
+
 function updateData() {
   axios
-    .post('/basic/projectionreport', {
+    .post(baseUrl + '/basic/projectionreport', {
       areaId
     })
     .then(res => {
       let data = res.data
       personInAuth.play(data.deptInPersonDto)
-      causeTable.play(data.causeDto, data.total)
+      causeTable.play(data.causeDto)
+
+      let carTotal: number = 0
+      data.causeDto.map(x => {
+        carTotal += Number(x.count)
+      })
+
+      total.update(data.total, carTotal)
     })
 }
 
