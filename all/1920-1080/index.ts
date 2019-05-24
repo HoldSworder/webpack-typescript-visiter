@@ -72,7 +72,10 @@ class PersonInEchart extends Echarts {
       },
       xAxis: {
         name: '',
-        minInterval: 1
+        minInterval: 1,
+        axisLabel: {
+          fontSize: echartsFontSize
+        }
       },
       yAxis: {
         type: 'category',
@@ -82,7 +85,8 @@ class PersonInEchart extends Echarts {
       },
       textStyle: {
         fontFamily: 'Arial',
-        color: themeColor
+        color: themeColor,
+        fontSize: echartsFontSize
       },
       visualMap: {
         show: false,
@@ -92,6 +96,7 @@ class PersonInEchart extends Echarts {
       },
       series: [
         {
+          barMinHeight: 20,
           type: 'bar',
           label: {
             normal: {
