@@ -8,8 +8,8 @@ const themeColor: string = 'white'
 
 const echartsTrMax:number = 20
 const tableTrMax:number = 15
-const echartsSpeed:number = 15000
-const tableSpeed:number = 15000
+const echartsSpeed:number = 3000
+const tableSpeed:number = 3000
 const echartsFontSize:number = 30
 
 //区域id

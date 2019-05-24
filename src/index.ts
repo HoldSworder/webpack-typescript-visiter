@@ -6,11 +6,11 @@ import 'normalize.css'
 // const themeColor: string = '#B7E2FF'
 const themeColor: string = 'white'
 
-const echartsTrMax:number = 20
-const tableTrMax:number = 15
-const echartsSpeed:number = 15000
-const tableSpeed:number = 15000
-const echartsFontSize:number = 30
+const echartsTrMax:number = 12
+const tableTrMax:number = 9
+const echartsSpeed:number = 3000
+const tableSpeed:number = 3000
+const echartsFontSize:number = 14
 
 //区域id
 const areaId: number = 24
@@ -67,27 +67,27 @@ class PersonInEchart extends Echarts {
       grid: {
         left: '0%',
         right: '5%',
-        bottom: '5%',
-        top: '5%',
+        bottom: '0%',
+        top: '2%',
         containLabel: true
       },
       xAxis: {
         name: '',
         minInterval: 1,
-        axisLabel: {
-          fontSize: echartsFontSize
-        }
+        show: false
       },
       yAxis: {
         type: 'category',
         axisLabel: {
-          fontSize: echartsFontSize
+          fontSize: echartsFontSize,
+        },
+        axisTick: {
+          interval: 0,
         }
       },
       textStyle: {
         fontFamily: 'Arial',
-        color: themeColor,
-        fontSize: echartsFontSize
+        color: themeColor
       },
       visualMap: {
         show: false,
@@ -97,7 +97,8 @@ class PersonInEchart extends Echarts {
       },
       series: [
         {
-          barMinHeight: 20,
+          barCategoryGap: '30%',
+          barMinHeight: 5,
           type: 'bar',
           label: {
             normal: {
@@ -239,8 +240,8 @@ class totalTable {
       <th>${this.carTotal}</th>
     </tr>
     <tr>
-        <th>人员总数</th>
-        <th>${this.personTotal}</th>
+      <th>人员总数</th>
+      <th>${this.personTotal}</th>
     </tr>
     `
   }
