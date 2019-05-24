@@ -72,10 +72,7 @@ class PersonInEchart extends Echarts {
       },
       xAxis: {
         name: '',
-        minInterval: 1,
-        axisLabel: {
-          fontSize: echartsFontSize
-        }
+        minInterval: 1
       },
       yAxis: {
         type: 'category',
@@ -85,8 +82,7 @@ class PersonInEchart extends Echarts {
       },
       textStyle: {
         fontFamily: 'Arial',
-        color: themeColor,
-        fontSize: echartsFontSize
+        color: themeColor
       },
       visualMap: {
         show: false,
@@ -254,7 +250,6 @@ if (process.env.NODE_ENV == 'production') {
 } else {
   baseUrl = 'https://www.easy-mock.com/mock/5cdb7945f2f8913ca63714d2/test'
 }
-// baseUrl = 'https://www.easy-mock.com/mock/5cdb7945f2f8913ca63714d2/test'
 
 function updateData() {
   axios

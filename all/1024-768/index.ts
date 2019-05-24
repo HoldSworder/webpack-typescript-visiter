@@ -5,12 +5,6 @@ import 'normalize.css'
 
 const themeColor: string = '#B7E2FF'
 
-const echartsTrMax:number = 20
-const tableTrMax:number = 15
-const echartsSpeed:number = 15000
-const tableSpeed:number = 15000
-const echartsFontSize:number = 30
-
 //区域id
 const areaId: number = 24
 
@@ -72,21 +66,17 @@ class PersonInEchart extends Echarts {
       },
       xAxis: {
         name: '',
-        minInterval: 1,
-        axisLabel: {
-          fontSize: echartsFontSize
-        }
+        minInterval: 1
       },
       yAxis: {
         type: 'category',
         axisLabel: {
-          fontSize: echartsFontSize
+          fontSize: 16
         }
       },
       textStyle: {
         fontFamily: 'Arial',
-        color: themeColor,
-        fontSize: echartsFontSize
+        color: themeColor
       },
       visualMap: {
         show: false,
@@ -113,8 +103,8 @@ class PersonInEchart extends Echarts {
     super(id, option)
 
     this.indexArr = ['inCount', 'deptName']
-    this.trMax = echartsTrMax
-    this.speed = echartsSpeed
+    this.trMax = 20
+    this.speed = 15000
     this.interval
     this.response = []
   }
@@ -161,8 +151,8 @@ class Table {
   response: causeDto[]
   constructor(id: string) {
     this.id = id
-    this.trMax = tableTrMax
-    this.speed = tableSpeed
+    this.trMax = 15
+    this.speed = 15000
     this.interval
     this.response = []
     this.head = `
@@ -254,7 +244,6 @@ if (process.env.NODE_ENV == 'production') {
 } else {
   baseUrl = 'https://www.easy-mock.com/mock/5cdb7945f2f8913ca63714d2/test'
 }
-// baseUrl = 'https://www.easy-mock.com/mock/5cdb7945f2f8913ca63714d2/test'
 
 function updateData() {
   axios
