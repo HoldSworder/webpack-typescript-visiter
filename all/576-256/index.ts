@@ -3,7 +3,8 @@ import axios from 'axios'
 import './index.styl'
 import 'normalize.css'
 
-const themeColor: string = '#B7E2FF'
+// const themeColor: string = '#B7E2FF'
+const themeColor: string = 'white'
 
 const echartsTrMax:number = 12
 const tableTrMax:number = 9
@@ -169,7 +170,7 @@ class Table {
     this.response = []
     this.head = `
     <tr>
-      <th>车辆名称</th>
+      <th>车辆类型</th>
       <th>车数</th>
     </tr>
     `

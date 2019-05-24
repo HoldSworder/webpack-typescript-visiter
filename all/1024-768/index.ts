@@ -157,7 +157,7 @@ class Table {
     this.response = []
     this.head = `
     <tr>
-      <th>车辆名称</th>
+      <th>车辆类型</th>
       <th>车数</th>
     </tr>
     `
