@@ -6,14 +6,58 @@ import 'normalize.css'
 // const themeColor: string = '#B7E2FF'
 const themeColor: string = 'white'
 
-const echartsTrMax:number = 12
-const tableTrMax:number = 9
-const echartsSpeed:number = 3000
-const tableSpeed:number = 3000
-const echartsFontSize:number = 14
+class util {
+  static getUrlOption(url: string) {
+    let result: object = {}
+    const urlString = url.slice(url.indexOf('?') + 1)
+    urlString.split('&').map(x => {
+      let arr = x.split('=')
+      result[arr[0]] = parseInt(arr[1])
+    })
+    return result
+  }
+}
+
+interface optionObj {
+  echartsTrMax?: number //左表格单页最大条目数
+  tableTrMax?: number //右表格单页最大条目数
+  echartsSpeed?: number //左表格速度
+  tableSpeed?: number //右表格速度
+  ajaxSpeed?: number //ajax更新速度
+  echartsFontSize?: number //左表格字体大小
+  tableFontSize?: number //右表格字体大小
+  areaId?:number //区域Id
+}
+
+const urlOptionString: string = window.location.search
+let Option: optionObj = {
+  echartsTrMax: 20,
+  tableTrMax: 15,
+  echartsSpeed: 5000,
+  tableSpeed: 5000,
+  ajaxSpeed: 1000,
+  echartsFontSize: 30,
+  tableFontSize: 30,
+  areaId: 24
+}
+
+let urlOption: optionObj = util.getUrlOption(urlOptionString)
+for (const key in urlOption) {
+  const element = urlOption[key]
+  Option[key] = element
+}
+
+const echartsTrMax: number = Option.echartsTrMax
+const tableTrMax: number = Option.tableTrMax
+const echartsSpeed: number = Option.echartsSpeed
+const tableSpeed: number = Option.tableSpeed
+const echartsFontSize: number = Option.echartsFontSize
+
+let total_table = (document.querySelector('#total_table') as HTMLElement).style.fontSize = `${Option.tableFontSize}px`
+let cause_table = (document.querySelector('#cause_table') as HTMLElement).style.fontSize = `${Option.tableFontSize}px`
 
 //区域id
-const areaId: number = 24
+const areaId: number = Option.areaId
 
 interface causeDto {
   visitorCause: string
@@ -67,27 +111,27 @@ class PersonInEchart extends Echarts {
       grid: {
         left: '0%',
         right: '5%',
-        bottom: '0%',
-        top: '2%',
+        bottom: '5%',
+        top: '5%',
         containLabel: true
       },
       xAxis: {
         name: '',
         minInterval: 1,
-        show: false
+        axisLabel: {
+          fontSize: echartsFontSize
+        }
       },
       yAxis: {
         type: 'category',
         axisLabel: {
-          fontSize: echartsFontSize,
-        },
-        axisTick: {
-          interval: 0,
+          fontSize: echartsFontSize
         }
       },
       textStyle: {
         fontFamily: 'Arial',
-        color: themeColor
+        color: themeColor,
+        fontSize: echartsFontSize
       },
       visualMap: {
         show: false,
@@ -97,8 +141,7 @@ class PersonInEchart extends Echarts {
       },
       series: [
         {
-          barCategoryGap: '30%',
-          barMinHeight: 5,
+          barMinHeight: 20,
           type: 'bar',
           label: {
             normal: {
@@ -240,8 +283,8 @@ class totalTable {
       <th>${this.carTotal}</th>
     </tr>
     <tr>
-      <th>人员总数</th>
-      <th>${this.personTotal}</th>
+        <th>人员总数</th>
+        <th>${this.personTotal}</th>
     </tr>
     `
   }
@@ -265,10 +308,12 @@ function updateData() {
     })
     .then(res => {
       let data = res.data
-      const trMax:number = personInAuth.trMax
+      const trMax: number = personInAuth.trMax
       const deptArr = []
       for (let i = 0; i < Math.ceil(data.deptInPersonDto.length / trMax); i++) {
-        deptArr.push(data.deptInPersonDto.slice(i * trMax, (i + 1) * trMax).reverse())
+        deptArr.push(
+          data.deptInPersonDto.slice(i * trMax, (i + 1) * trMax).reverse()
+        )
       }
       personInAuth.play(Array.prototype.concat.apply([], deptArr))
       causeTable.play(data.causeDto)
@@ -283,9 +328,12 @@ function updateData() {
 }
 
 updateData()
-setInterval(function() {
-  updateData()
-}, 15000)
+setInterval(
+  function() {
+    updateData()
+  },
+  'ajaxSpeed' in Option ? Option.ajaxSpeed : 5000
+)
 
 // setTimeout(function() {
 //   axios

@@ -6,14 +6,58 @@ import 'normalize.css'
 // const themeColor: string = '#B7E2FF'
 const themeColor: string = 'white'
 
-const echartsTrMax:number = 12
-const tableTrMax:number = 9
-const echartsSpeed:number = 3000
-const tableSpeed:number = 3000
-const echartsFontSize:number = 14
+class util {
+  static getUrlOption(url: string) {
+    let result: object = {}
+    const urlString = url.slice(url.indexOf('?') + 1)
+    urlString.split('&').map(x => {
+      let arr = x.split('=')
+      result[arr[0]] = parseInt(arr[1])
+    })
+    return result
+  }
+}
+
+interface optionObj {
+  echartsTrMax?: number //左表格单页最大条目数
+  tableTrMax?: number //右表格单页最大条目数
+  echartsSpeed?: number //左表格速度
+  tableSpeed?: number //右表格速度
+  ajaxSpeed?: number //ajax更新速度
+  echartsFontSize?: number //左表格字体大小
+  tableFontSize?: number //右表格字体大小
+  areaId?: number //区域ID
+}
+
+const urlOptionString: string = window.location.search
+let Option: optionObj = {
+  echartsTrMax: 12,
+  tableTrMax: 9,
+  echartsSpeed: 5000,
+  tableSpeed: 5000,
+  ajaxSpeed: 1000,
+  echartsFontSize: 14,
+  tableFontSize: 14,
+  areaId: 24
+}
+
+let urlOption: optionObj = util.getUrlOption(urlOptionString)
+for (const key in urlOption) {
+  const element = urlOption[key]
+  Option[key] = element
+}
+
+const echartsTrMax: number = Option.echartsTrMax
+const tableTrMax: number = Option.tableTrMax
+const echartsSpeed: number = Option.echartsSpeed
+const tableSpeed: number = Option.tableSpeed
+const echartsFontSize: number = Option.echartsFontSize
+
+let total_table = (document.querySelector('#total_table') as HTMLElement).style.fontSize = `${Option.tableFontSize}px`
+let cause_table = (document.querySelector('#cause_table') as HTMLElement).style.fontSize = `${Option.tableFontSize}px`
 
 //区域id
-const areaId: number = 24
+const areaId: number = Option.areaId
 
 interface causeDto {
   visitorCause: string
@@ -285,7 +329,7 @@ function updateData() {
 updateData()
 setInterval(function() {
   updateData()
-}, 15000)
+}, Option.ajaxSpeed)
 
 // setTimeout(function() {
 //   axios

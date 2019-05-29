@@ -5,7 +5,8 @@ const webpack = require('webpack')
 module.exports = {
   mode: 'production',
   entry: {
-    index: './src/index.ts' //分开第三方模块 所以要给入口文件单独命名
+    index: './src/index.ts', //分开第三方模块 所以要给入口文件单独命名
+    // 1080: './src/1080/index.ts'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -49,9 +50,22 @@ module.exports = {
       minify: {
         removeAttributeQuotes: true
       },
+      // filename: "256.html",
+      // title: "256",
+      // chunks: ['256'],  // 按需引入对应名字的js文件
       hash: true,
       template: 'src/index.html'
     })
+    // new htmlPlugin({
+    //   minify: {
+    //     removeAttributeQuotes: true
+    //   },
+    //   filename: "1080.html",
+    //   title: "1080",
+    //   chunks: ['1080'], 
+    //   hash: true,
+    //   template: 'src/1080/index.html'
+    // })
   ],
   performance: {
     hints: false

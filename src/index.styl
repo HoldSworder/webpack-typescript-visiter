@@ -1,17 +1,13 @@
-$height = 256px
-$width = 576px
-$tableFontSize = 14px
-$tableWidth = 140px
-// $color = #B7E2FF
+$height = 1080px
+$width = 1920px
+$tableFontSize = 30px
 $color = white
+// $color = #B7E2FF
 
 body
   color $color
-  height $height
-  width $width
 
 .container
-  overflow hidden
   height $height
   width $width
   background black
@@ -20,35 +16,35 @@ body
   position absolute
   top 0px
   left 0px
-  width $width - $tableWidth
-  height $height + 30px
+  width 1200px
+  height $height
 
-$tableLeft = 425px
+$tableLeft = 1200px
 
 #cause_table
   position absolute
   left $tableLeft
-  width $tableWidth
+  width sum($width - $tableLeft - 10px)
   height 600px
   color $color
   font-size $tableFontSize
   display inline-block
-  padding 5px 5px
+  padding 30px 5px
 
 #total_table
   position absolute
   left $tableLeft
-  width $tableWidth
-  height $height
+  width sum($width - $tableLeft - 10px)
+  height 100px
   color $color
   font-size $tableFontSize
   display inline-block
   padding 10px 5px
-  top 200px
+  top 880px
 
 .table-class table
   width 100%
-  font-size $tableFontSize
+  // font-size $tableFontSize
 
 .table-class table td
   text-align center
