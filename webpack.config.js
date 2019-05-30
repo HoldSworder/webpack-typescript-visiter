@@ -20,30 +20,36 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.css$/,
-      use: ['style-loader', 'css-loader']
-    }, {
-      test: /\.(png|jpg|gif)/,
-      use: [{
-        loader: 'url-loader',
-        options: {
-          limit: 5000,
-          outputPath: 'images/'
-        }
-      }]
-    }, {
-      test: /\.ts$/,
-      use: 'ts-loader',
-      exclude: /node_modules/
-    }, {
-      test: /\.styl$/,
-      use: [
-        'style-loader',
-        'css-loader',
-        'postcss-loader',
-        'stylus-loader'
-      ]
-    }]
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }, {
+        test: /\.(png|jpg|gif)/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 5000,
+            outputPath: 'images/'
+          }
+        }]
+      }, {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.styl$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
+          'stylus-loader'
+        ]
+      },
+      {
+        test: /\.(htm|html)$/i,
+        use: ['html-withimg-loader']
+      }
+    ]
   },
   plugins: [
     new htmlPlugin({
@@ -71,3 +77,34 @@ module.exports = {
     hints: false
   }
 }
+
+
+// {
+//   test: /\.styl$/,
+//   use: [
+//     'style-loader',
+//     'css-loader',
+//     'postcss-loader',
+//     'stylus-loader'
+//   ]
+// }, {
+//   test: /\.(png|jpg|gif)$/,
+//   use: [{
+//     loader: 'file-loader',
+//     options: {
+//       name: '[name].[ext]',
+//       publicPath: "./images/",
+//       outputPath: "images/"
+//     }
+//   }]
+// },
+// {
+//   test: /\.(html)$/,
+//   use: {
+//     loader: 'html-loader',
+//     options: {
+//       attrs: ['img:src', 'img:data-src', 'audio:src'],
+//       // minimize: true
+//     }
+//   }
+// },

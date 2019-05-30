@@ -31,7 +31,7 @@ interface optionObj {
 
 const urlOptionString: string = window.location.search
 let Option: optionObj = {
-  echartsTrMax: 12,
+  echartsTrMax: 11,
   tableTrMax: 9,
   echartsSpeed: 5000,
   tableSpeed: 5000,

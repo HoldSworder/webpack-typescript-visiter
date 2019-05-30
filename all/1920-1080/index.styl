@@ -2,8 +2,9 @@ $height = 1080px
 $width = 1920px
 $tableFontSize = 30px
 $color = white
-// $color = #B7E2FF
+$logoHeight = 80px
 
+// $color = #B7E2FF
 body
   color $color
 
@@ -18,6 +19,7 @@ body
   left 0px
   width 1200px
   height $height
+  margin-top $logoHeight
 
 $tableLeft = 1200px
 
@@ -53,3 +55,21 @@ $tableLeft = 1200px
 .table-class table th
   text-align center
   border 1px solid #069
+
+.logo-box
+  display inline-flex
+  align-items center
+  padding 10px
+  width $tableLeft
+
+.logo-box img
+  width 70px
+  height 70px
+
+.text-box p
+  margin 0
+  font-size $tableFontSize
+  padding-left 10px
+
+.text-box p:first-child
+  margin-bottom 5px

@@ -111,8 +111,8 @@ class PersonInEchart extends Echarts {
       grid: {
         left: '0%',
         right: '5%',
-        bottom: '5%',
-        top: '5%',
+        bottom: '1%',
+        top: '2%',
         containLabel: true
       },
       xAxis: {
