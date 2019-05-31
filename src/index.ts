@@ -2,21 +2,10 @@ import * as echarts from 'echarts'
 import axios from 'axios'
 import './index.styl'
 import 'normalize.css'
+import util from './util/util'
 
 // const themeColor: string = '#B7E2FF'
 const themeColor: string = 'white'
-
-class util {
-  static getUrlOption(url: string) {
-    let result: object = {}
-    const urlString = url.slice(url.indexOf('?') + 1)
-    urlString.split('&').map(x => {
-      let arr = x.split('=')
-      result[arr[0]] = parseInt(arr[1])
-    })
-    return result
-  }
-}
 
 interface optionObj {
   echartsTrMax?: number //左表格单页最大条目数
@@ -26,7 +15,7 @@ interface optionObj {
   ajaxSpeed?: number //ajax更新速度
   echartsFontSize?: number //左表格字体大小
   tableFontSize?: number //右表格字体大小
-  areaId?:number //区域Id
+  areaId?: number //区域Id
 }
 
 const urlOptionString: string = window.location.search
@@ -37,7 +26,7 @@ let Option: optionObj = {
   tableSpeed: 5000,
   ajaxSpeed: 1000,
   echartsFontSize: 30,
-  tableFontSize: 30,
+  tableFontSize: 28,
   areaId: 24
 }
 
@@ -53,8 +42,12 @@ const echartsSpeed: number = Option.echartsSpeed
 const tableSpeed: number = Option.tableSpeed
 const echartsFontSize: number = Option.echartsFontSize
 
-let total_table = (document.querySelector('#total_table') as HTMLElement).style.fontSize = `${Option.tableFontSize}px`
-let cause_table = (document.querySelector('#cause_table') as HTMLElement).style.fontSize = `${Option.tableFontSize}px`
+let total_table = ((document.querySelector(
+  '#total_table'
+) as HTMLElement).style.fontSize = `${Option.tableFontSize}px`)
+let cause_table = ((document.querySelector(
+  '#cause_table'
+) as HTMLElement).style.fontSize = `${Option.tableFontSize}px`)
 
 //区域id
 const areaId: number = Option.areaId
@@ -360,3 +353,11 @@ setInterval(
 //       causeTable.play(data.causeDto, data.total)
 //     })
 // }, 20000)
+
+
+setInterval(function() {
+  let nowTime: any = util.getTime(new Date())
+  let timeDom: Element = document.querySelector('#nowTime')
+
+  timeDom.innerHTML = `${nowTime.year}年${nowTime.month}月${nowTime.day} ${nowTime.hours}:${nowTime.min}:${nowTime.sec}`
+}, 1000)

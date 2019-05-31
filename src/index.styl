@@ -32,6 +32,7 @@ $tableLeft = 1200px
   font-size $tableFontSize
   display inline-block
   padding 30px 5px
+  margin-top $logoHeight
 
 #total_table
   position absolute
@@ -43,6 +44,7 @@ $tableLeft = 1200px
   display inline-block
   padding 10px 5px
   top 880px
+  margin-top 20px
 
 .table-class table
   width 100%
@@ -56,15 +58,25 @@ $tableLeft = 1200px
   text-align center
   border 1px solid #069
 
+$imgWidth = 70px
+
 .logo-box
   display inline-flex
   align-items center
+  justify-content space-between
   padding 10px
-  width $tableLeft
+  width $width - 30px
 
 .logo-box img
-  width 70px
-  height 70px
+  width $imgWidth
+  height $imgWidth
+
+.text-box
+  align-self center
+  display flex
+  flex-direction column
+  align-items center
+  padding-left 165px
 
 .text-box p
   margin 0
@@ -73,3 +85,8 @@ $tableLeft = 1200px
 
 .text-box p:first-child
   margin-bottom 5px
+
+#nowTime
+  font-size 30px
+  align-self flex-end
+

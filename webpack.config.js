@@ -12,6 +12,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[name].js' //以key做为输出的名字
   },
+  resolve: {
+    extensions: ['.js','.ts']
+  },
   devServer: {
     contentBase: path.resolve(__dirname, 'dist'),
     host: 'localhost',
@@ -77,34 +80,3 @@ module.exports = {
     hints: false
   }
 }
-
-
-// {
-//   test: /\.styl$/,
-//   use: [
-//     'style-loader',
-//     'css-loader',
-//     'postcss-loader',
-//     'stylus-loader'
-//   ]
-// }, {
-//   test: /\.(png|jpg|gif)$/,
-//   use: [{
-//     loader: 'file-loader',
-//     options: {
-//       name: '[name].[ext]',
-//       publicPath: "./images/",
-//       outputPath: "images/"
-//     }
-//   }]
-// },
-// {
-//   test: /\.(html)$/,
-//   use: {
-//     loader: 'html-loader',
-//     options: {
-//       attrs: ['img:src', 'img:data-src', 'audio:src'],
-//       // minimize: true
-//     }
-//   }
-// },

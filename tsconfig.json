@@ -8,7 +8,7 @@
   },
   "include": [
     "./src/*",
-    // "./src/1080/*"
+    "./src/util/*"
   ],
   "exclude": [
     "./node_modules"

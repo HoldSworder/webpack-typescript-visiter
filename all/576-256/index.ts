@@ -2,21 +2,10 @@ import * as echarts from 'echarts'
 import axios from 'axios'
 import './index.styl'
 import 'normalize.css'
+import util from './util/util'
 
 // const themeColor: string = '#B7E2FF'
 const themeColor: string = 'white'
-
-class util {
-  static getUrlOption(url: string) {
-    let result: object = {}
-    const urlString = url.slice(url.indexOf('?') + 1)
-    urlString.split('&').map(x => {
-      let arr = x.split('=')
-      result[arr[0]] = parseInt(arr[1])
-    })
-    return result
-  }
-}
 
 interface optionObj {
   echartsTrMax?: number //左表格单页最大条目数
@@ -32,12 +21,12 @@ interface optionObj {
 const urlOptionString: string = window.location.search
 let Option: optionObj = {
   echartsTrMax: 11,
-  tableTrMax: 9,
+  tableTrMax: 8,
   echartsSpeed: 5000,
   tableSpeed: 5000,
   ajaxSpeed: 1000,
   echartsFontSize: 14,
-  tableFontSize: 14,
+  tableFontSize: 13,
   areaId: 24
 }
 
@@ -53,8 +42,12 @@ const echartsSpeed: number = Option.echartsSpeed
 const tableSpeed: number = Option.tableSpeed
 const echartsFontSize: number = Option.echartsFontSize
 
-let total_table = (document.querySelector('#total_table') as HTMLElement).style.fontSize = `${Option.tableFontSize}px`
-let cause_table = (document.querySelector('#cause_table') as HTMLElement).style.fontSize = `${Option.tableFontSize}px`
+let total_table = ((document.querySelector(
+  '#total_table'
+) as HTMLElement).style.fontSize = `${Option.tableFontSize}px`)
+let cause_table = ((document.querySelector(
+  '#cause_table'
+) as HTMLElement).style.fontSize = `${Option.tableFontSize}px`)
 
 //区域id
 const areaId: number = Option.areaId
@@ -123,10 +116,10 @@ class PersonInEchart extends Echarts {
       yAxis: {
         type: 'category',
         axisLabel: {
-          fontSize: echartsFontSize,
+          fontSize: echartsFontSize
         },
         axisTick: {
-          interval: 0,
+          interval: 0
         }
       },
       textStyle: {
@@ -309,10 +302,12 @@ function updateData() {
     })
     .then(res => {
       let data = res.data
-      const trMax:number = personInAuth.trMax
+      const trMax: number = personInAuth.trMax
       const deptArr = []
       for (let i = 0; i < Math.ceil(data.deptInPersonDto.length / trMax); i++) {
-        deptArr.push(data.deptInPersonDto.slice(i * trMax, (i + 1) * trMax).reverse())
+        deptArr.push(
+          data.deptInPersonDto.slice(i * trMax, (i + 1) * trMax).reverse()
+        )
       }
       personInAuth.play(Array.prototype.concat.apply([], deptArr))
       causeTable.play(data.causeDto)
@@ -356,3 +351,10 @@ setInterval(function() {
 //       causeTable.play(data.causeDto, data.total)
 //     })
 // }, 20000)
+
+setInterval(function() {
+  let nowTime: any = util.getTime(new Date())
+  let timeDom: Element = document.querySelector('#nowTime')
+
+  timeDom.innerHTML = `<p>${nowTime.hours}:${nowTime.min}:${nowTime.sec}</p><p> ${nowTime.year}年${nowTime.month}月${nowTime.day} </p>`
+}, 1000)

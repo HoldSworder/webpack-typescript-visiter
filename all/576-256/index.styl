@@ -5,6 +5,7 @@ $tableWidth = 140px
 // $color = #B7E2FF
 $color = white
 $logoHeight = 35px
+$imgWidth = 30px
 
 body
   color $color
@@ -36,6 +37,7 @@ $tableLeft = 425px
   font-size $tableFontSize
   display inline-block
   padding 5px 5px
+  margin-top $imgWidth + 10px
 
 #total_table
   position absolute
@@ -64,11 +66,24 @@ $tableLeft = 425px
   display inline-flex
   align-items center
   padding 3px
-  width $tableLeft
+  width $width - 20px
+  justify-content space-between
+  padding-bottom 0
 
 .logo-box img
   width 30px
   height 30px
+
+.logo-box img
+  width $imgWidth
+  height $imgWidth
+
+.text-box
+  align-self center
+  display flex
+  flex-direction column
+  align-items center
+  padding-left 50px
 
 .text-box p
   margin 0
@@ -77,3 +92,14 @@ $tableLeft = 425px
 
 .text-box p:first-child
   margin-bottom 0px
+
+#nowTime
+  font-size $tableFontSize
+  align-self flex-end
+  display flex
+  align-items center
+  flex-direction column
+  flex-wrap wrap
+
+#nowTime p
+  margin 0
