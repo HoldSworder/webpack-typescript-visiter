@@ -1,3 +1,6 @@
+/**
+ * 1920 * 1080
+ */
 import * as echarts from 'echarts'
 import axios from 'axios'
 import './index.styl'
@@ -303,6 +306,12 @@ function updateData() {
       let data = res.data
       const trMax: number = personInAuth.trMax
       const deptArr = []
+
+      //过滤小于等于0的数据
+      data.deptInPersonDto = data.deptInPersonDto.filter(x => {
+        return x.inCount > 0
+      })
+
       for (let i = 0; i < Math.ceil(data.deptInPersonDto.length / trMax); i++) {
         deptArr.push(
           data.deptInPersonDto.slice(i * trMax, (i + 1) * trMax).reverse()
@@ -359,5 +368,5 @@ setInterval(function() {
   let nowTime: any = util.getTime(new Date())
   let timeDom: Element = document.querySelector('#nowTime')
 
-  timeDom.innerHTML = `${nowTime.year}年${nowTime.month}月${nowTime.day} ${nowTime.hours}:${nowTime.min}:${nowTime.sec}`
+  timeDom.innerHTML = `${nowTime.year}年${nowTime.month}月${nowTime.day}日 ${nowTime.hours}:${nowTime.min}:${nowTime.sec}`
 }, 1000)

@@ -1,3 +1,6 @@
+/**
+ * 256 * 576
+ */
 import * as echarts from 'echarts'
 import axios from 'axios'
 import './index.styl'
@@ -304,18 +307,22 @@ function updateData() {
       let data = res.data
       const trMax: number = personInAuth.trMax
       const deptArr = []
+      //过滤小于等于0的数据
+      data.deptInPersonDto = data.deptInPersonDto.filter(x => {
+        return x.inCount > 0
+      })
       for (let i = 0; i < Math.ceil(data.deptInPersonDto.length / trMax); i++) {
         deptArr.push(
           data.deptInPersonDto.slice(i * trMax, (i + 1) * trMax).reverse()
         )
       }
-      personInAuth.play(Array.prototype.concat.apply([], deptArr))
-      causeTable.play(data.causeDto)
-
       let carTotal: number = 0
       data.causeDto.map(x => {
         carTotal += Number(x.count)
       })
+
+      personInAuth.play(Array.prototype.concat.apply([], deptArr))
+      causeTable.play(data.causeDto)
 
       total.update(data.total, carTotal)
     })
@@ -356,5 +363,7 @@ setInterval(function() {
   let nowTime: any = util.getTime(new Date())
   let timeDom: Element = document.querySelector('#nowTime')
 
-  timeDom.innerHTML = `<p>${nowTime.hours}:${nowTime.min}:${nowTime.sec}</p><p> ${nowTime.year}年${nowTime.month}月${nowTime.day} </p>`
+  timeDom.innerHTML = `<p>${nowTime.year}年${nowTime.month}月${
+    nowTime.day
+  }日</p><p>${nowTime.hours}:${nowTime.min}:${nowTime.sec}</p>`
 }, 1000)
