@@ -163,27 +163,35 @@ class PersonInEchart extends Echarts {
 
   updateData(src: deptInPersonDto[]) {
     let dataSrc: any = [[this.indexArr]]
-
+    console.log(src)
+    
     for (const item of src) {
       dataSrc.push([item.inCount, item.deptName])
     }
+
     this.option.dataset.source = dataSrc
     this.initFuc()
   }
 
   play(src: deptInPersonDto[]) {
     const THAT = this
+    let index: number = 0
     if (src.length == THAT.response.length) {
       THAT.response = src
       return
     }
     if (THAT.interval) clearInterval(THAT.interval)
     THAT.response = src
-    let index: number = 0
     function playFun() {
-      THAT.updateData(
-        THAT.response.slice(index * THAT.trMax, (index + 1) * THAT.trMax)
-      )
+      // 最后一页如果数量不足 取第一页的信息填补
+      let target = THAT.response.slice(index * THAT.trMax, (index + 1) * THAT.trMax)
+      if(target.length < THAT.trMax) {
+        let diffNum = THAT.trMax - target.length
+        target = [...THAT.response.slice(0, diffNum), ...target]
+        // let diffArr = THAT.response.splice(0, diffNum)
+        // THAT.response = [...THAT.response, ...diffArr]
+      }
+      THAT.updateData(target)
       index++
     }
     playFun()

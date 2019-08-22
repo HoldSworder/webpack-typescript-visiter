@@ -1,14 +1,19 @@
-$height = 1080px
-$width = 1920px
-$tableFontSize = 30px
-$color = white
-$logoHeight = 80px
-
+$height = 256px
+$width = 576px
+$tableFontSize = 14px
+$tableWidth = 140px
 // $color = #B7E2FF
+$color = white
+$logoHeight = 35px
+$imgWidth = 22px
+
 body
   color $color
+  height $height
+  width $width
 
 .container
+  overflow hidden
   height $height
   width $width
   background black
@@ -17,34 +22,33 @@ body
   position absolute
   top 0px
   left 0px
-  width 1200px
-  height $height
+  width $width - $tableWidth
+  height $height + 30px - $logoHeight
   margin-top $logoHeight
 
-$tableLeft = 1200px
+$tableLeft = 425px
 
 #cause_table
   position absolute
   left $tableLeft
-  width sum($width - $tableLeft - 10px)
+  width $tableWidth
   height 600px
   color $color
   font-size $tableFontSize
   display inline-block
-  padding 30px 5px
-  margin-top $logoHeight
+  padding 5px 5px
+  margin-top $imgWidth + 10px
 
 #total_table
   position absolute
   left $tableLeft
-  width sum($width - $tableLeft - 10px)
-  height 100px
+  width $tableWidth
+  height $height
   color $color
   font-size $tableFontSize
   display inline-block
   padding 10px 5px
-  top 880px
-  margin-top 20px
+  top 200px
 
 .table-class table
   width 100%
@@ -58,35 +62,45 @@ $tableLeft = 1200px
   text-align center
   border 1px solid #069
 
-$imgWidth = 70px
-
 .logo-box
   display inline-flex
   align-items center
+  padding 3px
+  width $width - 20px
   justify-content space-between
-  padding 10px
-  width $width - 30px
+  padding-bottom 0
+
+.logo-box img
+  width 30px
+  height 30px
 
 .logo-box img
   width $imgWidth
   height $imgWidth
+  padding-bottom 5px
 
 .text-box
   align-self center
   display flex
   flex-direction column
   align-items center
-  padding-left 165px
+  padding-left 50px
 
 .text-box p
   margin 0
   font-size $tableFontSize
-  padding-left 10px
+  padding-left 5px
 
 .text-box p:first-child
-  margin-bottom 5px
+  margin-bottom 0px
 
 #nowTime
-  font-size 30px
+  font-size 12px
   align-self flex-end
+  display flex
+  align-items center
+  flex-direction column
+  flex-wrap wrap
 
+#nowTime p
+  margin 0

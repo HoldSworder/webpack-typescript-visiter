@@ -1,5 +1,5 @@
 /**
- * 1920 * 1080
+ * 256 * 576
  */
 import * as echarts from 'echarts'
 import axios from 'axios'
@@ -18,18 +18,18 @@ interface optionObj {
   ajaxSpeed?: number //ajax更新速度
   echartsFontSize?: number //左表格字体大小
   tableFontSize?: number //右表格字体大小
-  areaId?: number //区域Id
+  areaId?: number //区域ID
 }
 
 const urlOptionString: string = window.location.search
 let Option: optionObj = {
-  echartsTrMax: 20,
-  tableTrMax: 15,
+  echartsTrMax: 11,
+  tableTrMax: 8,
   echartsSpeed: 5000,
   tableSpeed: 5000,
   ajaxSpeed: 1000,
-  echartsFontSize: 30,
-  tableFontSize: 28,
+  echartsFontSize: 14,
+  tableFontSize: 13,
   areaId: 24
 }
 
@@ -107,27 +107,27 @@ class PersonInEchart extends Echarts {
       grid: {
         left: '0%',
         right: '5%',
-        bottom: '1%',
+        bottom: '0%',
         top: '2%',
         containLabel: true
       },
       xAxis: {
         name: '',
         minInterval: 1,
-        axisLabel: {
-          fontSize: echartsFontSize
-        }
+        show: false
       },
       yAxis: {
         type: 'category',
         axisLabel: {
           fontSize: echartsFontSize
+        },
+        axisTick: {
+          interval: 0
         }
       },
       textStyle: {
         fontFamily: 'Arial',
-        color: themeColor,
-        fontSize: echartsFontSize
+        color: themeColor
       },
       visualMap: {
         show: false,
@@ -137,7 +137,8 @@ class PersonInEchart extends Echarts {
       },
       series: [
         {
-          barMinHeight: 20,
+          barCategoryGap: '30%',
+          barMinHeight: 5,
           type: 'bar',
           label: {
             normal: {
@@ -163,12 +164,10 @@ class PersonInEchart extends Echarts {
 
   updateData(src: deptInPersonDto[]) {
     let dataSrc: any = [[this.indexArr]]
-    console.log(src)
-    
+
     for (const item of src) {
       dataSrc.push([item.inCount, item.deptName])
     }
-
     this.option.dataset.source = dataSrc
     this.initFuc()
   }
@@ -184,8 +183,11 @@ class PersonInEchart extends Echarts {
     THAT.response = src
     function playFun() {
       // 最后一页如果数量不足 取第一页的信息填补
-      let target = THAT.response.slice(index * THAT.trMax, (index + 1) * THAT.trMax)
-      if(target.length < THAT.trMax) {
+      let target = THAT.response.slice(
+        index * THAT.trMax,
+        (index + 1) * THAT.trMax
+      )
+      if (target.length < THAT.trMax) {
         let diffNum = THAT.trMax - target.length
         target = [...THAT.response.slice(0, diffNum), ...target]
         // let diffArr = THAT.response.splice(0, diffNum)
@@ -287,8 +289,8 @@ class totalTable {
       <th>${this.carTotal}</th>
     </tr>
     <tr>
-        <th>人员总数</th>
-        <th>${this.personTotal}</th>
+      <th>人员总数</th>
+      <th>${this.personTotal}</th>
     </tr>
     `
   }
@@ -314,36 +316,31 @@ function updateData() {
       let data = res.data
       const trMax: number = personInAuth.trMax
       const deptArr = []
-
       //过滤小于等于0的数据
       data.deptInPersonDto = data.deptInPersonDto.filter(x => {
         return x.inCount > 0
       })
-
       for (let i = 0; i < Math.ceil(data.deptInPersonDto.length / trMax); i++) {
         deptArr.push(
           data.deptInPersonDto.slice(i * trMax, (i + 1) * trMax).reverse()
         )
       }
-      personInAuth.play(Array.prototype.concat.apply([], deptArr))
-      causeTable.play(data.causeDto)
-
       let carTotal: number = 0
       data.causeDto.map(x => {
         carTotal += Number(x.count)
       })
+
+      personInAuth.play(Array.prototype.concat.apply([], deptArr))
+      causeTable.play(data.causeDto)
 
       total.update(data.total, carTotal)
     })
 }
 
 updateData()
-setInterval(
-  function() {
-    updateData()
-  },
-  'ajaxSpeed' in Option ? Option.ajaxSpeed : 5000
-)
+setInterval(function() {
+  updateData()
+}, Option.ajaxSpeed)
 
 // setTimeout(function() {
 //   axios
@@ -371,10 +368,11 @@ setInterval(
 //     })
 // }, 20000)
 
-
 setInterval(function() {
   let nowTime: any = util.getTime(new Date())
   let timeDom: Element = document.querySelector('#nowTime')
 
-  timeDom.innerHTML = `${nowTime.year}年${nowTime.month}月${nowTime.day}日 ${nowTime.hours}:${nowTime.min}:${nowTime.sec}`
+  timeDom.innerHTML = `<p>${nowTime.year}年${nowTime.month}月${
+    nowTime.day
+  }日</p><p>${nowTime.hours}:${nowTime.min}:${nowTime.sec}</p>`
 }, 1000)
